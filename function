@@ -1,0 +1,43 @@
+//format one
+public function getFormatedNoNew($text,$column,$table){
+        //w = $this->session->userdata('ware');
+        $format = "000";
+        $sql = "select `".$column."` as auto_id from `".$table."` /*where  ware='" . $w . "' and ware>=0*/ order by id desc limit 1";
+        $query = $this->db->query($sql)->row();
+        if(!empty($query->auto_id)){
+            $main = explode('-',$query->auto_id);
+            $result = $text.(($main[1])+1);
+        }
+        else
+            $result=$text.$format+1;
+        return $result;
+    }
+    
+    
+//format two
+public function getFormatedNo($text,$column,$table){
+
+        //$w = $this->session->userdata('wire');
+        $format = "0000";
+        //$sql = "select `".$column."` as auto_id from `".$table."` where  ware='" . $w . "' and ware>=0 order by id desc limit 1";
+        $sql = "select `".$column."` as auto_id from `".$table."` order by id desc limit 1";
+        
+        
+        $query = $this->db->query($sql)->row();
+        if(!empty($query->auto_id) && !empty($query)){
+            $main = explode('-',$query->auto_id);
+            if($main[1]+1 < 10){
+                $sl = '000'.(($main[1])+1);
+            }elseif($main[1]+1 < 100){
+                $sl = '00'.(($main[1])+1);
+            }elseif($main[1]+1 < 1000){
+                $sl = '0'.(($main[1])+1);
+            }else{
+                $sl = $main[1];
+            }
+            $result = $main[0].'-'.$sl;
+        }
+        else
+            $result=$text.'0001';
+        return $result;
+    }
